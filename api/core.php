@@ -17,4 +17,11 @@ abstract class ACore {
     public function get_body() {
         include("templates/index.php");
     }
+
+    public function formatstr($str) {
+        $str = trim($str);
+        $str = stripslashes($str);
+        $str = htmlspecialchars($str);
+        return $str;
+    }
 }
