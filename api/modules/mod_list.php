@@ -8,63 +8,47 @@
     <label for="filter-asc">Женский</label>
     <input type="radio" name="filter" id="filter-desc" value="m">
     <label for="filter-desc">Мужской</label><br>
-    <input type="radio" name="group" id="group37" value="37">
-    <label for="group37">П-37</label>
-    <input type="radio" name="group" id="group38" value="38">
-    <label for="group38">П-38</label>
-    <input type="radio" name="group" id="group39" value="39">
-    <label for="group39">П-39</label><br>
-    <input type="submit" value="Фильтровать" class='form__btn'>
+    <?php
+        $resGroup = $this -> connect -> query("SELECT * FROM groups");
+        foreach ($resGroup as $groupRow) {
+            echo "<input type='radio' name='group' id='$groupRow[group_name]' value='$groupRow[id_group]'>
+            <label for='$groupRow[group_name]'>$groupRow[group_name]</label>";
+        }
+    ?>
+    <br><input type="submit" value="Фильтровать" class='form__btn'>
 </form>
 
 <?php
 $extra_sql = " ";
 
-if (isset($_POST['sort']) && isset($_POST['filter'])){
-    $sort = $this -> formatstr($_POST['sort']);
-    $filter = $this -> formatstr($_POST['filter']);
-    if ($filter == 'f') {
-        $extra_sql .= "AND gender = 'ж'";
-        if ($sort == 'asc') {
-            $extra_sql .= " ORDER BY s_age";
-        } else {
-            $extra_sql .= " ORDER BY s_age DESC";
-        }
-    } else {
-        $extra_sql .= "AND gender = 'м'";
-
-        if ($sort == 'asc') {
-            $extra_sql .= " ORDER BY s_age";
-        } else {
-            $extra_sql .= " ORDER BY s_age DESC";
-        }
-    }
-} elseif (isset($_POST['sort'])) {
-    $sort = $this -> formatstr($_POST['sort']);
-    if ($sort == 'asc') {
-        $extra_sql .= "ORDER BY s_age";
-    } else {
-        $extra_sql .= "ORDER BY s_age DESC";
-    }
-} elseif (isset($_POST['filter'])) {
-    $filter = $this -> formatstr($_POST['filter']);
-    if ($filter == 'f') {
-        $extra_sql .= "AND gender = 'ж'";
-    } else {
-        $extra_sql .= "AND gender = 'м'";
-    }
-} elseif (isset($_POST['group'])) {
+if (isset($_POST['group'])) {
     $group = $this -> formatstr($_POST['group']);
-    if ($group == 37) {
-        $extra_sql .= "AND groups.id_group = 1";
-    } elseif ($group == 38) {
-        $extra_sql .= "AND groups.id_group = 2";
+    if ($group == 1) {
+        $extra_sql .= " AND `groups`.id_group = 1";
+    } elseif ($group == 2) {
+        $extra_sql .= " AND `groups`.id_group = 2";
     } else {
-        $extra_sql .= "AND groups.id_group = 3";
+        $extra_sql .= " AND `groups`.id_group = 3";
     }
 }
 
+if (isset($_POST['filter'])) {
+    $filter = $this -> formatstr($_POST['filter']);
+    if ($filter == 'f') {
+        $extra_sql .= " AND `students`.gender = 'ж'";
+    } else {
+        $extra_sql .= " AND `students`.gender = 'м'";
+    }
+}
 
+if (isset($_POST['sort'])) {
+    $sort = $this -> formatstr($_POST['sort']);
+    if ($sort == 'asc') {
+        $extra_sql .= " ORDER BY s_age";
+    } else {
+        $extra_sql .= " ORDER BY s_age DESC";
+    }
+}
 
 
 $result1 = $this -> connect -> query("SELECT * FROM `students`, `groups` WHERE students.id_group = groups.id_group".$extra_sql);  

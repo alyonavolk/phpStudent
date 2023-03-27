@@ -1,8 +1,10 @@
 <?php 
+session_start();
 header("Content-Type:text/html; charset=UTF-8;");
 
 require_once("api/config.php");
 require_once("api/core.php");
+require_once("api/user.php");
 
 if (isset($_GET['option'])) { //проверяет пришел ли get параметр
     $class = trim(stripslashes(htmlspecialchars($_GET['option'])));

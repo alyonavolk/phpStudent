@@ -78,9 +78,20 @@ a:hover {
     border-radius: 10px;
     font-size: 16px;
     padding: 5px;
+    margin: 5px;
 }
 .form__btn:hover{
     background-color: #d3c9f7;
+}
+
+.form__input{
+    width: 300px;
+    padding: 7px;
+    background: inherit;
+    border: 3px solid #9893ad;
+    background-color: #d3c9f7;
+    border-radius: 20px;
+    margin: 5px;
 }
 
 .details {
